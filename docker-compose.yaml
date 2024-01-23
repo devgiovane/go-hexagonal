@@ -1,0 +1,26 @@
+version: '3'
+services:
+  database:
+    image: mysql:latest
+    container_name: database
+    command: "--default-authentication-plugin=mysql_native_password"
+    environment:
+      MYSQL_ROOT_PASSWORD: dfe4da18
+      MYSQL_DATABASE: system
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./.docker/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  application:
+    build: .
+    container_name: application
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/go/src
+volumes:
+  mysql:
+    driver: local
