@@ -20,12 +20,12 @@ var cliCmd = &cobra.Command{
 			name := product[0]
 			price, _ := strconv.ParseFloat(product[1], 64)
 			response := createProductService.Execute(service.InputCreateProduct{Name: name, Price: price})
-			fmt.Println("User created", response)
+			fmt.Println("Product created", response)
 		case "get":
 			productRepository := repository.NewProductRepository(connection)
 			getProductService := service.NewGetProductService(productRepository)
 			response := getProductService.Execute(service.InputGetProduct{ID: id})
-			fmt.Println("User", response)
+			fmt.Println("Product", response)
 		default:
 			fmt.Println("Invalid action use -a")
 		}
