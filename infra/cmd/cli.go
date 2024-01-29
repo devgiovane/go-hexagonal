@@ -4,12 +4,9 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"hexagonal/application/service"
-	"hexagonal/infra/database"
 	"hexagonal/infra/repository"
 	"strconv"
 )
-
-var connection = database.NewMySQLConnection()
 
 var cliCmd = &cobra.Command{
 	Use:   "cli",
@@ -20,13 +17,14 @@ var cliCmd = &cobra.Command{
 		case "create":
 			productRepository := repository.NewProductRepository(connection)
 			createProductService := service.NewCreateProductService(productRepository)
-			price, _ := strconv.ParseFloat(params[1], 64)
-			createProductService.Execute(service.InputCreateProduct{Name: params[0], Price: price})
-			fmt.Println("User created")
+			name := product[0]
+			price, _ := strconv.ParseFloat(product[1], 64)
+			response := createProductService.Execute(service.InputCreateProduct{Name: name, Price: price})
+			fmt.Println("User created", response)
 		case "get":
 			productRepository := repository.NewProductRepository(connection)
-			getProductService := service.NewProductService(productRepository)
-			response := getProductService.Execute(params[0])
+			getProductService := service.NewGetProductService(productRepository)
+			response := getProductService.Execute(service.InputGetProduct{ID: id})
 			fmt.Println("User", response)
 		default:
 			fmt.Println("Invalid action use -a")
@@ -35,10 +33,12 @@ var cliCmd = &cobra.Command{
 }
 
 var action string
-var params []string
+var id string
+var product []string
 
 func init() {
 	rootCmd.AddCommand(cliCmd)
 	cliCmd.Flags().StringVarP(&action, "action", "a", "", "Create/Get product")
-	cliCmd.Flags().StringSliceVarP(&params, "params", "p", []string{}, "")
+	cliCmd.Flags().StringVarP(&id, "id", "i", "", "Product ID")
+	cliCmd.Flags().StringSliceVarP(&product, "params", "p", []string{}, "Product")
 }

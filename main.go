@@ -1,6 +1,8 @@
 package main
 
-import "hexagonal/cmd"
+import (
+	"hexagonal/infra/cmd"
+)
 
 func main() {
 	cmd.Execute()

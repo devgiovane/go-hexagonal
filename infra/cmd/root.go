@@ -2,8 +2,11 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"hexagonal/infra/database"
 	"os"
 )
+
+var connection = database.NewMySQLConnection()
 
 var rootCmd = &cobra.Command{
 	Use:   "hexagonal",

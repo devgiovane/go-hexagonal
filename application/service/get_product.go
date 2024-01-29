@@ -12,14 +12,18 @@ type GetProductService struct {
 	productRepository contract.ProductRepositoryInterface
 }
 
-func NewProductService(productRepository contract.ProductRepositoryInterface) *GetProductService {
+func NewGetProductService(productRepository contract.ProductRepositoryInterface) *GetProductService {
 	return &GetProductService{
 		productRepository: productRepository,
 	}
 }
 
-func (g *GetProductService) Execute(id string) OutputGetProduct {
-	product, err := g.productRepository.Get(id)
+type InputGetProduct struct {
+	ID string
+}
+
+func (g *GetProductService) Execute(input InputGetProduct) OutputGetProduct {
+	product, err := g.productRepository.Get(input.ID)
 	if err != nil {
 		panic(err)
 	}

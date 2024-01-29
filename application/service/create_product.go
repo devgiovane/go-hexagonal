@@ -21,7 +21,7 @@ type InputCreateProduct struct {
 	Price float64
 }
 
-func (c *CreateProductService) Execute(input InputCreateProduct) {
+func (c *CreateProductService) Execute(input InputCreateProduct) string {
 	product := &domain.Product{
 		ID:    uuid.New().String(),
 		Name:  input.Name,
@@ -35,4 +35,5 @@ func (c *CreateProductService) Execute(input InputCreateProduct) {
 	if err != nil {
 		panic(err)
 	}
+	return product.ID
 }
