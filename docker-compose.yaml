@@ -14,6 +14,8 @@ services:
       - ./.docker/mysql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
+    networks:
+      - infra
   application:
     build: .
     container_name: application
@@ -21,6 +23,11 @@ services:
       - "9000:9000"
     volumes:
       - .:/go/src
+    networks:
+      - infra
 volumes:
   mysql:
     driver: local
+networks:
+  infra:
+    driver: bridge
